@@ -82,4 +82,14 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Prevent image saving/copying */
+  .drag-none {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
 }

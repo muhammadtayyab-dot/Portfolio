@@ -25,7 +25,7 @@ import { ChatWidget } from "@/components/ChatWidget";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import muhammadPhoto from "@assets/WhatsApp_Image_2026-01-15_at_7.30.53_AM_1768460571326.jpeg";
+import muhammadPhoto from "@assets/pfp.jpeg";
 
 export default function Home() {
   const containerVars: Variants = {
@@ -160,11 +160,13 @@ export default function Home() {
               className="relative"
             >
               <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full animate-pulse" />
-              <div className="relative aspect-[4/5] w-full rounded-[2.5rem] overflow-hidden border border-primary/20 bg-secondary shadow-2xl">
+              <div className="relative aspect-[4/5] w-full rounded-[2.5rem] overflow-hidden border border-primary/20 bg-secondary shadow-2xl select-none">
                 <img 
                   src={muhammadPhoto} 
                   alt="Muhammad" 
-                  className="h-full w-full object-cover object-center scale-105 hover:scale-110 transition-transform duration-700" 
+                  className="h-full w-full object-cover object-center scale-105 hover:scale-110 transition-transform duration-700 pointer-events-none drag-none" 
+                  onContextMenu={(e) => e.preventDefault()}
+                  onDragStart={(e) => e.preventDefault()}
                 />
               </div>
               <motion.div 
