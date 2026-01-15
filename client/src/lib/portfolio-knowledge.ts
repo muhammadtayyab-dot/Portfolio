@@ -2,7 +2,7 @@ export const knowledge = [
   // ABOUT / BIO
   {
     keywords: ["who are you", "about you", "bio", "introduction", "name", "who is muhammad"],
-    answer: "I'm Muhammad, an AI Wizard & Full-Stack Developer based in Pakistan (Lahore/Karachi). I specialize in building intelligent tools for startups and automating workflows. My mission is to launch my own AI agency to help businesses scale with AI."
+    answer: "I'm Muhammad, an AI Wizard & Full-Stack Developer based in Pakistan (Lahore/Karachi). I specialize in building intelligent tools for startups and automating workflows. My mission is to launch my own AI agency to help businesses scale with AI. You can reach me directly at muhammadtayyab0904@gmail.com"
   },
   {
     keywords: ["location", "where are you", "city", "country", "based"],
@@ -18,7 +18,7 @@ export const knowledge = [
   // PROJECTS - General
   {
     keywords: ["projects", "portfolio", "work", "what have you built", "examples"],
-    answer: "I've conjured up several powerful projects:\n1. AI-Powered Social Media Analyzer 📊\n2. Freelance Service Marketplace 🛒\n3. Custom n8n Automation Workflows ⚙️\n\nAsk me for details on any of these!"
+    answer: "I've conjured up several powerful projects:\n1. AI-Powered Social Media Analyzer 📊\n2. Freelance Service Marketplace 🛒\n3. Custom n8n Automation Workflows ⚙️\n\nAsk me for details on any of these! I've also built intelligent systems for various clients across different domains."
   },
   
   // PROJECT 1: Social Media Analyzer
@@ -48,13 +48,13 @@ export const knowledge = [
   // RATES
   {
     keywords: ["rate", "price", "cost", "charge", "hourly", "quote", "pricing", "money"],
-    answer: "My standard rates are $35–$50/hr, depending on project complexity. I'm also open to fixed-price project quotes. Let's discuss your requirements!"
+    answer: "My hourly rate is $40–60/hr. For projects, I use a milestone-based split (33% deposit, 33% prototype, 34% final). I also offer monthly retainers ranging from $800 to $3,000 for dedicated AI support. Check the 'Rates' section on my site for more details!"
   },
   
   // CONTACT / HIRE
   {
     keywords: ["contact", "hire", "email", "reach", "work with you", "freelance", "available"],
-    answer: "I am currently available for freelance and remote work! You can contact me through the form on this page, or ask me to 'reveal contact info' (just kidding, the form is best!). Let's build something magic."
+    answer: "I am currently available for freelance and remote work! You can contact me through the form on this page or email me at muhammadtayyab0904@gmail.com. Let's build something magic."
   },
   
   // FUN / WIZARD THEME

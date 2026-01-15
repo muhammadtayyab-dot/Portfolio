@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Bot, User, Sparkles } from "lucide-react";
+import { X, Send, Bot, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +10,7 @@ import { TypeAnimation } from "react-type-animation";
 import Fuse from "fuse.js";
 import { knowledge } from "@/lib/portfolio-knowledge";
 import { cn } from "@/lib/utils";
+import muhammadPhoto from "@assets/WhatsApp_Image_2026-01-15_at_7.30.53_AM_1768460571326.jpeg";
 
 interface Message {
   id: string;
@@ -25,10 +26,9 @@ interface ChatWindowProps {
 
 const STORAGE_KEY = "muhammad-portfolio-chat-history";
 
-// Initialize Fuse.js for fuzzy search
 const fuse = new Fuse(knowledge, {
   keys: ["keywords"],
-  threshold: 0.4, // Lower = more strict
+  threshold: 0.4,
   includeScore: true,
 });
 
@@ -39,7 +39,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load history on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -49,7 +48,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
         console.error("Failed to parse chat history", e);
       }
     } else {
-      // Initial greeting if no history
       const initialMsg: Message = {
         id: "init-1",
         role: "bot",
@@ -61,21 +59,18 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
     }
   }, []);
 
-  // Save history on change
   useEffect(() => {
     if (messages.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     }
   }, [messages]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isTyping, isOpen]);
 
-  // Focus input on open
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 300);
@@ -98,18 +93,15 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    // Simulate think time (0.8 - 1.5s)
     const delay = Math.random() * 700 + 800;
 
     setTimeout(() => {
-      // Find answer
       const result = fuse.search(userText);
       let botResponse = "I'm still learning new spells... but ask me about my projects, skills, services or rates! ✨";
 
       if (result.length > 0) {
         botResponse = result[0].item.answer;
       } else {
-        // Fallback checks for simple matches if fuzzy fails or for very specific hardcoded overrides
         const lower = userText.toLowerCase();
         if (lower.includes("price") || lower.includes("rate") || lower.includes("cost")) {
            botResponse = knowledge.find(k => k.keywords.includes("rate"))?.answer || botResponse;
@@ -136,8 +128,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
 
   const handleQuickReply = (text: string) => {
     setInputValue(text);
-    // Optional: auto send
-    // handleSend();
   };
 
   return (
@@ -148,16 +138,15 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-20 right-4 z-50 w-[90vw] max-w-[380px] sm:right-6"
+          className="fixed bottom-20 right-4 z-[9999] w-[90vw] max-w-[380px] sm:right-6"
         >
           <Card className="border-primary/30 shadow-2xl bg-card/95 backdrop-blur-md overflow-hidden flex flex-col h-[500px] sm:h-[600px]">
-            {/* Header */}
             <CardHeader className="p-4 bg-primary/10 border-b border-primary/10 flex flex-row items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/40 blur-md rounded-full animate-pulse"></div>
                   <Avatar className="h-10 w-10 border-2 border-primary relative z-10">
-                    <AvatarImage src="/avatar-placeholder.png" />
+                    <AvatarImage src={muhammadPhoto} />
                     <AvatarFallback className="bg-primary text-primary-foreground">
                       <Bot className="h-6 w-6" />
                     </AvatarFallback>
@@ -184,7 +173,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               </Button>
             </CardHeader>
 
-            {/* Messages */}
             <ScrollArea className="flex-1 p-4 bg-gradient-to-b from-background/50 to-background/80">
               <div className="space-y-4 flex flex-col">
                 {messages.map((msg, index) => {
@@ -230,7 +218,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               </div>
             </ScrollArea>
 
-            {/* Quick Replies (Optional) */}
             <div className="px-4 py-2 bg-background/50 flex gap-2 overflow-x-auto no-scrollbar">
               {["Projects", "Rates", "Services", "Hire"].map((chip) => (
                 <button
@@ -243,7 +230,6 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
               ))}
             </div>
 
-            {/* Input */}
             <CardFooter className="p-3 bg-card border-t border-border">
               <div className="flex w-full items-center gap-2">
                 <Input
