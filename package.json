@@ -1,8 +1,24 @@
 {
-  "name": "rest-express",
+  "name": "ai-wizard-portfolio",
   "version": "1.0.0",
+  "description": "AI Wizard's portfolio - A modern full-stack web application featuring AI-powered chat, project showcase, and freelance services",
+  "author": "Muhammad",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muhammadtayyab-dot/Portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "ai",
+    "wizard",
+    "full-stack",
+    "react",
+    "express",
+    "langchain",
+    "openai"
+  ],
   "scripts": {
     "dev:client": "vite dev --port 5000",
     "dev": "NODE_ENV=development tsx server/index.ts",
