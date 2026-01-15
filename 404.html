@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      // Redirect all 404s to the home page with the path as a query parameter
+      const path = window.location.pathname.replace(/^\/Portfolio/, '');
+      if (path !== '/') {
+        window.location.replace('/Portfolio/?redirect=' + encodeURIComponent(path));
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
