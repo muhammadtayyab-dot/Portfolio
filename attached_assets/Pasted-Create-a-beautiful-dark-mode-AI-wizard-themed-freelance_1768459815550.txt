@@ -1,0 +1,74 @@
+Create a beautiful, dark-mode, AI-wizard-themed freelance portfolio website for Muhammad, an AI/full-stack developer from Pakistan.
+
+Tech stack: Next.js 14+ (App Router), TypeScript, Tailwind CSS, shadcn/ui components, lucide-react icons, framer-motion for animations, next-themes for dark/light mode.
+
+Main features already planned:
+- Hero section with animated tagline "Muhammad – AI Wizard & Full-Stack Freelancer"
+- About section with bio (Lahore/Karachi based, building AI tools for startups/small businesses, mission to launch AI agency)
+- Skills grid (LangChain, OpenAI, Next.js, Flutter, n8n, Docker, PostgreSQL, MongoDB, etc.)
+- Projects section: 3 cards
+  1. AI-Powered Social Media Analyzer (scrapes X/Instagram/RSS/web → OpenAI reports)
+  2. Freelance Service Marketplace (Flutter apps + web for barbers/plumbers/etc.)
+  3. n8n Automation Workflows
+- Services grid ($35–50/hr)
+- Contact form (Formspree placeholder)
+
+To make it look ultra-professional: add a **floating chatbot widget** in bottom-right corner that works completely offline / without any API key / without any external service.
+
+Chatbot requirements – must be 100% client-side and free:
+- Floating bubble icon (MessageCircle from lucide-react) – opens chat window on click
+- Chat window: header with "Muhammad AI Assistant" + wizard icon or avatar
+- Messages list (user right-aligned blue, bot left-aligned purple/neon)
+- Input field + send button
+- Typing indicator (three bouncing dots) for 0.8–1.5 seconds before reply
+- Typewriter / streaming-like effect for bot replies (use react-type-animation or simple setInterval)
+- Knowledge base: hardcoded JavaScript object or array containing Q&A pairs based on the portfolio content. At minimum include answers for:
+  - who are you / about you / bio
+  - what do you do / skills
+  - what projects have you built / tell me about your projects
+  - details about AI Social Media Analyzer
+  - details about Freelance Marketplace apps
+  - details about n8n automations
+  - what services do you offer
+  - how much do you charge / rates / pricing
+  - how to hire you / contact
+  - are you available for freelance / remote work
+  - where are you located
+  - fun / wizard themed replies for greetings like "hi", "hello", "abracadabra"
+- Matching logic: simple but smart
+  - keyword matching (includes, toLowerCase)
+  - multiple keywords per question category
+  - fallback reply: "I'm still learning new spells... but ask me about my projects, skills, services or rates! ✨"
+  - optional: use fuse.js (tiny fuzzy search library) if easy to add via npm
+- Animation: chat window slides up from bottom with framer-motion
+- Persist chat history in localStorage (so refresh doesn't lose messages)
+- Mobile friendly: chat window doesn't cover whole screen on small devices
+- Accessibility: aria labels, keyboard focus
+
+Do NOT use:
+- OpenAI, Grok, any LLM API
+- Vercel AI SDK
+- any external embed script (ElfSight, Voiceflow, Tidio, etc.)
+- any backend route (/api/...)
+
+Only client-side React state + hardcoded knowledge.
+
+Bonus polish:
+- Greeting message from bot when chat opens: "Hello! I'm Muhammad's AI sidekick. Ask me anything about his AI projects, skills, rates or how to work together! 🪄"
+- Quick reply buttons / suggestions at bottom (e.g. chips: "Projects", "Rates", "Hire", "About")
+- Subtle sound or no sound
+- Close button with X icon
+
+Project structure:
+- components/ChatWidget.tsx (main floating component)
+- components/ChatWindow.tsx
+- lib/portfolio-knowledge.ts (export const knowledge = [...] or object)
+- app/layout.tsx → include ChatWidget at root level
+- Use shadcn/ui Card, Button, Input, Avatar for chat UI
+
+Install necessary dependencies if needed:
+npm install framer-motion lucide-react @radix-ui/react-scroll-area react-type-animation fuse.js (optional)
+
+Build the full portfolio first, then add & style the chatbot as the cherry on top.
+
+Start scaffolding now – create the knowledge base first, then the chat components, then integrate into layout.
