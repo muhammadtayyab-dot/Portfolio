@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Bot, Sparkles } from "lucide-react";
+import { X, Send, Bot, Sparkles, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { TypeAnimation } from "react-type-animation";
 import Fuse from "fuse.js";
 import { knowledge } from "@/lib/portfolio-knowledge";
 import { cn } from "@/lib/utils";
-import muhammadPhoto from "@assets/WhatsApp_Image_2026-01-15_at_7.30.53_AM_1768460571326.jpeg";
 
 interface Message {
   id: string;
@@ -29,7 +28,6 @@ const STORAGE_KEY = "muhammad-portfolio-chat-history";
 const fuse = new Fuse(knowledge, {
   keys: ["keywords"],
   threshold: 0.4,
-  includeScore: true,
 });
 
 export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
@@ -45,13 +43,18 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
       try {
         setMessages(JSON.parse(saved));
       } catch (e) {
-        console.error("Failed to parse chat history", e);
+        setMessages([{
+          id: "init-1",
+          role: "bot",
+          text: "Hello! I'm Muhammad's AI sidekick. Ask me anything about his projects, skills, rates or how to work together!",
+          timestamp: Date.now(),
+        }]);
       }
     } else {
       const initialMsg: Message = {
         id: "init-1",
         role: "bot",
-        text: "Hello! I'm Muhammad's AI sidekick. Ask me anything about his AI projects, skills, rates or how to work together! 🪄",
+        text: "Hello! I'm Muhammad's AI sidekick. Ask me anything about his projects, skills, rates or how to work together!",
         timestamp: Date.now(),
       };
       setMessages([initialMsg]);
@@ -63,13 +66,10 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
     if (messages.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     }
-  }, [messages]);
-
-  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, isTyping, isOpen]);
+  }, [messages, isTyping]);
 
   useEffect(() => {
     if (isOpen) {
@@ -93,19 +93,12 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    const delay = Math.random() * 700 + 800;
-
     setTimeout(() => {
       const result = fuse.search(userText);
-      let botResponse = "I'm still learning new spells... but ask me about my projects, skills, services or rates! ✨";
+      let botResponse = "I'm still learning... ask me about my projects, rates, or skills!";
 
       if (result.length > 0) {
         botResponse = result[0].item.answer;
-      } else {
-        const lower = userText.toLowerCase();
-        if (lower.includes("price") || lower.includes("rate") || lower.includes("cost")) {
-           botResponse = knowledge.find(k => k.keywords.includes("rate"))?.answer || botResponse;
-        }
       }
 
       const botMsg: Message = {
@@ -117,134 +110,83 @@ export function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
 
       setMessages((prev) => [...prev, botMsg]);
       setIsTyping(false);
-    }, delay);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSend();
-    }
-  };
-
-  const handleQuickReply = (text: string) => {
-    setInputValue(text);
+    }, 1000);
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.95 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          transition={{ duration: 0.3 }}
-          className="fixed bottom-20 right-4 z-[9999] w-[90vw] max-w-[380px] sm:right-6"
+          className="fixed bottom-24 right-4 z-[9999] w-[calc(100vw-2rem)] max-w-[400px]"
         >
-          <Card className="border-primary/30 shadow-2xl bg-card/95 backdrop-blur-md overflow-hidden flex flex-col h-[500px] sm:h-[600px]">
-            <CardHeader className="p-4 bg-primary/10 border-b border-primary/10 flex flex-row items-center justify-between shrink-0">
+          <Card className="border border-border/50 shadow-2xl bg-card/95 backdrop-blur-xl flex flex-col h-[500px]">
+            <CardHeader className="p-4 border-b border-border/50 flex flex-row items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-primary/40 blur-md rounded-full animate-pulse"></div>
-                  <Avatar className="h-10 w-10 border-2 border-primary relative z-10">
-                    <AvatarImage src={muhammadPhoto} />
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      <Bot className="h-6 w-6" />
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
+                <Avatar className="h-8 w-8 border border-border">
+                  <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">AI</AvatarFallback>
+                </Avatar>
                 <div>
-                  <h3 className="font-bold text-sm sm:text-base flex items-center gap-2">
-                    Muhammad AI
-                    <Sparkles className="h-3 w-3 text-secondary animate-pulse" />
-                  </h3>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    Online
-                  </span>
+                  <h3 className="font-semibold text-sm">Muhammad AI</h3>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Assistant</span>
+                  </div>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onClose}
-                className="hover:bg-primary/20 hover:text-primary rounded-full h-8 w-8"
-              >
+              <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full h-8 w-8">
                 <X className="h-4 w-4" />
               </Button>
             </CardHeader>
 
-            <ScrollArea className="flex-1 p-4 bg-gradient-to-b from-background/50 to-background/80">
-              <div className="space-y-4 flex flex-col">
-                {messages.map((msg, index) => {
-                  const isLast = index === messages.length - 1;
-                  return (
-                    <motion.div
-                      key={msg.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
+            <ScrollArea className="flex-1 p-4 overflow-x-hidden">
+              <div className="space-y-4">
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={cn(
+                      "flex flex-col max-w-[85%] gap-1",
+                      msg.role === "user" ? "ml-auto items-end" : "items-start"
+                    )}
+                  >
+                    <div
                       className={cn(
-                        "flex w-max max-w-[85%] flex-col gap-2 rounded-2xl px-4 py-3 text-sm shadow-sm",
+                        "rounded-2xl px-4 py-2.5 text-sm leading-relaxed break-words",
                         msg.role === "user"
-                          ? "ml-auto bg-primary text-primary-foreground rounded-tr-sm"
-                          : "bg-muted/80 text-foreground border border-primary/10 rounded-tl-sm"
+                          ? "bg-primary text-primary-foreground rounded-tr-none"
+                          : "bg-secondary text-secondary-foreground rounded-tl-none border border-border/50"
                       )}
                     >
-                      {msg.role === "bot" && isLast && !isTyping ? (
-                        <TypeAnimation
-                          sequence={[msg.text]}
-                          wrapper="span"
-                          speed={65}
-                          cursor={false}
-                        />
-                      ) : (
-                        <span className="whitespace-pre-wrap">{msg.text}</span>
-                      )}
-                    </motion.div>
-                  );
-                })}
-
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
                 {isTyping && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex items-center gap-1 bg-muted/50 w-fit px-4 py-3 rounded-2xl rounded-tl-sm border border-primary/5"
-                  >
-                    <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                    <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                    <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce"></span>
-                  </motion.div>
+                  <div className="bg-secondary w-fit px-4 py-2.5 rounded-2xl rounded-tl-none border border-border/50">
+                    <div className="flex gap-1">
+                      <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:0.2s]" />
+                      <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                  </div>
                 )}
                 <div ref={scrollRef} />
               </div>
             </ScrollArea>
 
-            <div className="px-4 py-2 bg-background/50 flex gap-2 overflow-x-auto no-scrollbar">
-              {["Projects", "Rates", "Services", "Hire"].map((chip) => (
-                <button
-                  key={chip}
-                  onClick={() => handleQuickReply(chip)}
-                  className="text-xs px-3 py-1 rounded-full bg-primary/10 border border-primary/20 hover:bg-primary/20 hover:border-primary/40 transition-colors whitespace-nowrap"
-                >
-                  {chip}
-                </button>
-              ))}
-            </div>
-
-            <CardFooter className="p-3 bg-card border-t border-border">
+            <CardFooter className="p-3 border-t border-border/50">
               <div className="flex w-full items-center gap-2">
                 <Input
                   ref={inputRef}
-                  placeholder="Type a message..."
+                  placeholder="Ask about projects, rates..."
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="bg-muted/50 border-primary/20 focus-visible:ring-primary/50"
+                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                  className="bg-secondary/50 border-none focus-visible:ring-1 focus-visible:ring-primary h-10"
                 />
-                <Button
-                  onClick={handleSend}
-                  size="icon"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground shrink-0 rounded-full shadow-lg shadow-primary/20"
-                >
+                <Button onClick={handleSend} size="icon" className="shrink-0 rounded-xl h-10 w-10">
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
